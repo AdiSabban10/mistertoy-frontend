@@ -1,6 +1,6 @@
 import { toyService } from "../../services/toy.service.js";
 import { showSuccessMsg } from "../../services/event-bus.service.js";
-import { ADD_TOY, TOY_UNDO, REMOVE_TOY, SET_TOYS, SET_FILTER_BY, SET_IS_LOADING, UPDATE_TOY } from "../reducers/toy.reducer.js";
+import { ADD_TOY, REMOVE_TOY, SET_TOYS, SET_FILTER_BY, SET_IS_LOADING, UPDATE_TOY } from "../reducers/toy.reducer.js";
 import { store } from "../store.js";
 
 export function loadToys() {
@@ -30,18 +30,17 @@ export function removeToy(toyId) {
         })
 }
 
-export function removeToyOptimistic(toyId) {
-    store.dispatch({ type: REMOVE_TOY, toyId })
-    return toyService.remove(toyId)
-        .then(() => {
-            showSuccessMsg('Removed Toy!')
-        })
-        .catch(err => {
-            store.dispatch({ type: TOY_UNDO })
-            console.log('toy action -> Cannot remove toy', err)
-            throw err
-        })
-}
+// export function removeToyOptimistic(toyId) {
+//     store.dispatch({ type: REMOVE_TOY, toyId })
+//     return toyService.remove(toyId)
+//         .then(() => {
+//             showSuccessMsg('Removed Toy!')
+//         })
+//         .catch(err => {
+//             console.log('toy action -> Cannot remove toy', err)
+//             throw err
+//         })
+// }
 
 export function saveToy(toy) {
     const type = toy._id ? UPDATE_TOY : ADD_TOY
