@@ -48,8 +48,8 @@ function save(toy) {
 
 function getEmptyToy() {
     return {
-        name: 'Toy-' + (Date.now() % 1000),
-        price: utilService.getRandomIntInclusive(20, 500),
+        name: '',
+        price: 0,
         inStock: true,
     }
 }

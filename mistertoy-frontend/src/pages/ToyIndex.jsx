@@ -36,7 +36,7 @@ export function ToyIndex() {
             })
     }
 
-    function onAddToy() {
+    function onEditToy() {
         const toyToSave = toyService.getEmptyToy()
         saveToy(toyToSave)
             .then((savedToy) => {
@@ -47,25 +47,11 @@ export function ToyIndex() {
             })
     }
 
-    function onEditToy(toy) {
-        const price = +prompt('New price?')
-        const toyToSave = { ...toy, price }
-
-        saveToy(toyToSave)
-            .then((savedToy) => {
-                showSuccessMsg(`Toy updated to price: $${savedToy.price}`)
-            })
-            .catch(err => {
-                showErrorMsg('Cannot update toy')
-            })
-    }
-
     return (
         <div>
             <h3>Toys App</h3>
             <main>
-                {/* <Link to="/toy/edit">Add Toy</Link> */}
-                <button className='add-btn' onClick={onAddToy}>Add Random Toy</button>
+                <button><Link to="/toy/edit">Add Toy</Link></button>
                 <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} />
                 {!isLoading
                     ? <ToyList

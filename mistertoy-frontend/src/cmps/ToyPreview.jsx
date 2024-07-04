@@ -7,8 +7,11 @@ export function ToyPreview({ toy }) {
             <p>Price: <span>${toy.price.toLocaleString()}</span></p>
             <h4>In Stock? {toy.inStock ? 'yes' : 'no'}</h4>
             <hr />
-            {/* <Link to={`/toy/edit/${toy._id}`}>Edit</Link>  */}
-            <button><Link to={`/toy/${toy._id}`}>Details</Link></button>
+            <div>
+                <button onClick={() => onRemoveToy(toy._id)}>x</button>
+                <button><Link to={`/toy/edit/${toy._id}`}>Edit</Link> </button>
+                <button><Link to={`/toy/${toy._id}`}>Details</Link></button>
+            </div>
 
         </article>
     )
