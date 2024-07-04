@@ -40,6 +40,7 @@ function save(toy) {
     if (toy._id) {
         return storageService.put(STORAGE_KEY, toy)
     } else {
+        toy.createdAt = Date.now()
         return storageService.post(STORAGE_KEY, toy)
     }
 }
@@ -49,6 +50,7 @@ function getEmptyToy() {
     return {
         name: 'Toy-' + (Date.now() % 1000),
         price: utilService.getRandomIntInclusive(20, 500),
+        inStock: true,
     }
 }
 
@@ -57,6 +59,6 @@ function getDefaultFilter() {
 }
 
 // TEST DATA
-storageService.post(STORAGE_KEY, {name: 'Talking Doll', price: 90}).then(x => console.log(x))
+storageService.post(STORAGE_KEY, {name: 'Talking Doll', price: 90, inStock: false, createdAt: 1631031801011}).then(x => console.log(x))
 
 
