@@ -11,10 +11,30 @@ export function ToyFilter({ filterBy, onSetFilter }) {
         onSetFilter.current(filterByToEdit)
     }, [filterByToEdit])
 
+    // function handleChange({ target }) {
+    //     let { value, name: field, type } = target
+    //     value = type === 'number' ? +value : value
+    //     setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
+    // }
     function handleChange({ target }) {
-        let { value, name: field, type } = target
-        value = type === 'number' ? +value : value
-        setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
+        const field = target.name
+        let value = target.value
+
+        switch (target.type) {
+            case 'number':
+            case 'range':
+                value = +value || ''
+                break;
+
+            case 'checkbox':
+                value = target.checked ? -1 : 1
+                break
+
+            default:
+                break;
+        }
+
+        setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value}))
     }
 
     return (
@@ -38,6 +58,38 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                     value={filterByToEdit.maxPrice || ''}
                     onChange={handleChange}
                 />
+                <div className="radio-sort flex justify-center align-center">
+                    <label htmlFor="all">
+                        <input defaultChecked type="radio" name="inStock" value="all" id="all" onChange={handleChange} />
+                        All
+                    </label>
+                    <label htmlFor="inStock">
+                        <input type="radio" name="inStock" value="inStock" id="inStock" onChange={handleChange} />
+                        In stock
+                    </label>
+                    <label htmlFor="outOfStock">
+                        <input type="radio" name="inStock" value="outOfStock" id="outOfStock" onChange={handleChange} />
+                        Out of stock
+                    </label>
+                </div>
+                <div>
+                    <label htmlFor="sortBy">Sort by:</label>
+                    <select name="sortBy" value={filterByToEdit.sortBy} onChange={handleChange}>
+                        <option value="">Select Sorting</option>
+                        <option value="name">Name</option>
+                        <option value="price">Price</option>
+                        <option value="createdAt">Created At</option>
+                    </select>
+
+                    <label htmlFor="sortDir">Sort descending:</label>
+                    <input
+                        type="checkbox"
+                        name="sortDir"
+                        id="sortDir"
+                        checked={filterByToEdit.sortDir === -1}
+                        onChange={handleChange}
+                    />
+                </div>
 
             </form>
 

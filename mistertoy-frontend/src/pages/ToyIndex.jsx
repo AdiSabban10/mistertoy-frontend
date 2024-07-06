@@ -36,16 +36,6 @@ export function ToyIndex() {
             })
     }
 
-    function onEditToy() {
-        const toyToSave = toyService.getEmptyToy()
-        saveToy(toyToSave)
-            .then((savedToy) => {
-                showSuccessMsg(`Toy added (id: ${savedToy._id})`)
-            })
-            .catch(err => {
-                showErrorMsg('Cannot add toy')
-            })
-    }
 
     return (
         <div>
@@ -54,11 +44,7 @@ export function ToyIndex() {
                 <button><Link to="/toy/edit">Add Toy</Link></button>
                 <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} />
                 {!isLoading
-                    ? <ToyList
-                        toys={toys}
-                        onRemoveToy={onRemoveToy}
-                        onEditToy={onEditToy}
-                    />
+                    ? <ToyList toys={toys} onRemoveToy={onRemoveToy} />
                     : <div>Loading...</div>
                 }
                 <hr />
