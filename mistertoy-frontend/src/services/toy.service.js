@@ -14,7 +14,6 @@ export const toyService = {
 }
 
 function query(filterBy = {}) {
-    console.log('filterBy:', filterBy)
     return storageService.query(STORAGE_KEY)
         .then(toys => {
             // Filtering by text
@@ -75,12 +74,13 @@ function getEmptyToy() {
     return {
         name: '',
         price: 0,
+        labels: [],
         inStock: true,
     }
 }
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '' }
+    return { txt: '', maxPrice: '', labels: [] }
 }
 
 // TEST DATA

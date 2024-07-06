@@ -2,20 +2,15 @@
 import { useEffect, useRef, useState } from "react"
 import { utilService } from "../services/util.service.js"
 
-export function ToyFilter({ filterBy, onSetFilter }) {
+export function ToyFilter({ filterBy, onSetFilter, labels: availableLabels }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({ ...filterBy })
     onSetFilter = useRef(utilService.debounce(onSetFilter, 300))
-
+    
     useEffect(() => {
         onSetFilter.current(filterByToEdit)
     }, [filterByToEdit])
 
-    // function handleChange({ target }) {
-    //     let { value, name: field, type } = target
-    //     value = type === 'number' ? +value : value
-    //     setFilterByToEdit((prevFilter) => ({ ...prevFilter, [field]: value }))
-    // }
     function handleChange({ target }) {
         const field = target.name
         let value = target.value
@@ -34,8 +29,20 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                 break;
         }
 
-        setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value}))
+        setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
     }
+
+    function handleLabelChange({ target }) {
+        const { name: label, checked: isChecked } = target
+
+        setFilterByToEdit(prevFilter => ({
+            ...prevFilter,
+            labels: isChecked
+                ? [...prevFilter.labels, label]
+                : prevFilter.labels.filter(lbl => lbl !== label)
+        }))
+    }
+
 
     return (
         <section className="toy-filter full main-layout">
@@ -71,6 +78,20 @@ export function ToyFilter({ filterBy, onSetFilter }) {
                         <input type="radio" name="inStock" value="outOfStock" id="outOfStock" onChange={handleChange} />
                         Out of stock
                     </label>
+                </div>
+                <div className="flex justify-center align-center">
+                    <h3>Labels:</h3>
+                    {availableLabels.map(label => (
+                        <label key={label}>
+                            <input
+                                type="checkbox"
+                                name={label}
+                                checked={filterByToEdit.labels.includes(label)}
+                                onChange={handleLabelChange}
+                            />
+                            {label}
+                        </label>
+                    ))}
                 </div>
                 <div>
                     <label htmlFor="sortBy">Sort by:</label>

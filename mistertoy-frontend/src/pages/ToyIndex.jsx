@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -15,6 +15,17 @@ export function ToyIndex() {
     const filterBy = useSelector(storeState => storeState.toyModule.filterBy)
     const isLoading = useSelector(storeState => storeState.toyModule.isLoading)
 
+    const labels = toys.reduce((uniqueLabels, toy) => {
+        toy.labels.forEach(label => {
+            if (!uniqueLabels.includes(label)) {
+                uniqueLabels.push(label)
+            }
+        })
+        return uniqueLabels
+    }, [])
+
+    // const labels = Array.from(new Set(toys.flatMap(toy => toy.labels)))
+    
     useEffect(() => {
         loadToys()
             .catch(err => {
@@ -42,7 +53,7 @@ export function ToyIndex() {
             <h3>Toys App</h3>
             <main>
                 <button><Link to="/toy/edit">Add Toy</Link></button>
-                <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} />
+                <ToyFilter filterBy={filterBy} onSetFilter={onSetFilter} labels={labels} />
                 {!isLoading
                     ? <ToyList toys={toys} onRemoveToy={onRemoveToy} />
                     : <div>Loading...</div>

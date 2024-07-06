@@ -30,6 +30,12 @@ export function ToyEdit() {
         setToyToEdit((prevToy) => ({ ...prevToy, [field]: value }))
     }
 
+    function handleLabelsChange({ target }) {
+        const { value } = target
+        const labelsArray = value.split(',').map(label => label.trim())
+        setToyToEdit(prevToy => ({ ...prevToy, labels: labelsArray }))
+    }
+
     function onSaveToy(ev) {
         ev.preventDefault()
         if (!toyToEdit.price) toyToEdit.price = 100
@@ -64,6 +70,16 @@ export function ToyEdit() {
                     placeholder="Enter price"
                     value={toyToEdit.price}
                     onChange={handleChange}
+                />
+                <label htmlFor="labels">Labels : </label>
+                <input
+                    type="text"
+                    name="labels"
+                    id="labels"
+                    placeholder="Enter labels separated by commas"
+                    value={toyToEdit.labels.join(', ')}
+                    onChange={handleLabelsChange}
+                    style={{ minWidth: 'calc(1ch * 30)' }}
                 />
 
                 <div>
